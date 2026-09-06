@@ -4,6 +4,14 @@ A lightweight, browser-based tool for turning image frames into animated GIF sti
 
 **Live app:** https://gif-sticker-studio.freestylerluffy.chatgpt.site
 
+## One-click deployment
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FWhoJave%2Fgif-sticker-studio%2Ftree%2Fmain%2Fdist&project-name=gif-sticker-studio&repository-name=gif-sticker-studio)
+
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/WhoJave/gif-sticker-studio)
+
+Both options create a copy in your own account and deploy the static application. No environment variables, API keys, or build command are required. The Cloudflare flow uses `wrangler.jsonc` to publish the contents of `dist/` as Worker static assets.
+
 ## Features
 
 - Upload multiple PNG, JPG, or WebP frames
