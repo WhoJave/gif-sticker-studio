@@ -49,11 +49,23 @@ const translations = {
     noAccount: 'アカウント不要', openCreate: '開いて、作って、ダウンロード。', processedLocally: '画像はブラウザ内でローカル処理されます。',
     addTwo: '書き出すには2フレーム以上追加してください。', addOneMore: 'あと1フレーム追加すると書き出せます。', ready: '書き出し可能です。さらに画像を追加することもできます。', demoReady: 'デモを読み込みました。速度やループ方法を調整してみましょう。',
     pleaseAddTwo: '先に2フレーム以上追加してください。', building: 'GIFを作成中…', downloaded: '{size} MB のGIFをダウンロードしました。', frames: '{count} フレーム', framesPlural: '{count} フレーム', pause: 'プレビューを一時停止', play: 'プレビューを再生', thumb: 'クリックしてプレビュー', demoCaption: 'つかまえて！'
+  },
+  ko: {
+    title: 'Loopi — GIF 스티커 스튜디오', localProcessing: '● 기기에서 처리', languageLabel: '언어', exportGif: 'GIF 내보내기',
+    eyebrow: 'GIF 스티커 스튜디오', heroOne: '움직임을 더하고.', heroTwo: '나만의 것으로.', lede: '몇 장의 이미지로 매끄럽게 반복되는 스티커를 브라우저에서 바로 만들어 보세요.',
+    addFrames: '프레임 추가', dropImages: '이미지를 여기에 놓으세요', chooseImages: '또는 눌러서 PNG, JPG, WebP 선택', needTry: '먼저 체험해 볼까요?', useDemo: '데모 프레임 사용',
+    tuneLoop: '반복 조정', frameSpeed: '프레임 속도', loopStyle: '반복 방식', normal: '일반', pingpong: '왕복', reverse: '역재생',
+    stickerText: '스티커 문구', captionPlaceholder: '예: 기다려!', textSize: '글자 크기', export: '내보내기', exportAnimated: '움직이는 GIF 내보내기',
+    livePreview: '실시간 미리보기', stickerAppears: '스티커가 여기에 표시됩니다', addOrDemo: '프레임을 추가하거나 데모를 불러오세요', infiniteLoop: '∞ 무한 반복',
+    privateDefault: '기본적으로 안전하게', framesStay: '이미지는 이 기기에만 보관됩니다.', madeForStickers: '스티커에 최적화', squareCanvas: '정사각형 캔버스, 부드러운 반복, 투명 PNG 지원.',
+    noAccount: '계정 필요 없음', openCreate: '열고, 만들고, 다운로드하세요.', processedLocally: '이미지는 브라우저에서 로컬로 처리됩니다.',
+    addTwo: '내보내려면 프레임을 두 개 이상 추가하세요.', addOneMore: '프레임을 하나 더 추가하면 내보낼 수 있어요.', ready: '내보낼 준비가 됐습니다. 이미지를 더 추가할 수도 있어요.', demoReady: '데모를 불러왔습니다. 속도와 반복 방식을 조정해 보세요.',
+    pleaseAddTwo: '먼저 프레임을 두 개 이상 추가하세요.', building: 'GIF 만드는 중…', downloaded: '{size} MB GIF를 다운로드했습니다.', frames: '{count} 프레임', framesPlural: '{count} 프레임', pause: '미리보기 일시 정지', play: '미리보기 재생', thumb: '눌러서 미리보기', demoCaption: '잡아 봐!'
   }
 };
 
 const browserLanguage = navigator.language.toLowerCase();
-const detectedLanguage = browserLanguage.startsWith('ja') ? 'ja' : browserLanguage.startsWith('zh-tw') || browserLanguage.startsWith('zh-hk') ? 'zh-TW' : browserLanguage.startsWith('zh') ? 'zh-CN' : 'en';
+const detectedLanguage = browserLanguage.startsWith('ko') ? 'ko' : browserLanguage.startsWith('ja') ? 'ja' : browserLanguage.startsWith('zh-tw') || browserLanguage.startsWith('zh-hk') ? 'zh-TW' : browserLanguage.startsWith('zh') ? 'zh-CN' : 'en';
 const state = { frames: [], index: 0, speed: 140, loop: 'normal', playing: true, timer: null, language: localStorage.getItem('loopi-language') || detectedLanguage };
 const canvas = $('#canvas');
 const ctx = canvas.getContext('2d', { willReadFrequently: true });
