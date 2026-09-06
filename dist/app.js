@@ -12,7 +12,7 @@ const translations = {
     privateDefault: 'Private by default', framesStay: 'Your frames stay on this device.', madeForStickers: 'Made for stickers', squareCanvas: 'Square canvas, smooth loops, transparent PNG support.',
     noAccount: 'No account needed', openCreate: 'Open, create, download.', processedLocally: 'Images are processed locally in your browser.',
     addTwo: 'Add at least two frames to export.', addOneMore: 'Add one more frame to export.', ready: 'Ready to export. Drag in more frames anytime.', demoReady: 'Demo loaded — try changing the speed and loop style.',
-    pleaseAddTwo: 'Please add at least two frames first.', building: 'Building your GIF…', downloaded: 'Downloaded {size} MB GIF.', frames: '{count} frame', framesPlural: '{count} frames', pause: 'Pause preview', play: 'Play preview', thumb: 'Click to preview', demoCaption: 'CATCH IT!'
+    pleaseAddTwo: 'Please add at least two frames first.', building: 'Building your GIF…', downloaded: 'Downloaded {size} MB GIF.', frames: '{count} frame', framesPlural: '{count} frames', pause: 'Pause preview', play: 'Play preview', thumb: 'Click to preview', demoCaption: 'CATCH IT!', themeDark: 'Use dark mode', themeLight: 'Use light mode'
   },
   'zh-CN': {
     title: 'Loopi — GIF 动态贴纸工作室', localProcessing: '● 本地处理', languageLabel: '语言', exportGif: '导出 GIF',
@@ -24,7 +24,7 @@ const translations = {
     privateDefault: '默认保护隐私', framesStay: '你的图片始终保留在本设备。', madeForStickers: '专为贴纸设计', squareCanvas: '方形画布、流畅循环，并支持透明 PNG。',
     noAccount: '无需账户', openCreate: '打开、制作、下载。', processedLocally: '图片仅在你的浏览器中进行本地处理。',
     addTwo: '至少添加两帧才能导出。', addOneMore: '再添加一帧即可导出。', ready: '可以导出了，也可继续拖入更多图片。', demoReady: '演示已载入——试试调整速度和循环方式。',
-    pleaseAddTwo: '请先添加至少两帧图片。', building: '正在生成 GIF…', downloaded: '已下载 {size} MB 的 GIF。', frames: '{count} 帧', framesPlural: '{count} 帧', pause: '暂停预览', play: '播放预览', thumb: '点击预览', demoCaption: '抓住它！'
+    pleaseAddTwo: '请先添加至少两帧图片。', building: '正在生成 GIF…', downloaded: '已下载 {size} MB 的 GIF。', frames: '{count} 帧', framesPlural: '{count} 帧', pause: '暂停预览', play: '播放预览', thumb: '点击预览', demoCaption: '抓住它！', themeDark: '使用深色模式', themeLight: '使用浅色模式'
   },
   'zh-TW': {
     title: 'Loopi — GIF 動態貼圖工作室', localProcessing: '● 本機處理', languageLabel: '語言', exportGif: '匯出 GIF',
@@ -36,7 +36,7 @@ const translations = {
     privateDefault: '預設保護隱私', framesStay: '你的圖片始終保留在本裝置。', madeForStickers: '專為貼圖設計', squareCanvas: '方形畫布、流暢循環，並支援透明 PNG。',
     noAccount: '無需帳戶', openCreate: '開啟、製作、下載。', processedLocally: '圖片僅在你的瀏覽器中進行本機處理。',
     addTwo: '至少加入兩格才能匯出。', addOneMore: '再加入一格即可匯出。', ready: '可以匯出了，也可繼續拖入更多圖片。', demoReady: '示範已載入——試試調整速度和循環方式。',
-    pleaseAddTwo: '請先加入至少兩格圖片。', building: '正在產生 GIF…', downloaded: '已下載 {size} MB 的 GIF。', frames: '{count} 格', framesPlural: '{count} 格', pause: '暫停預覽', play: '播放預覽', thumb: '點擊預覽', demoCaption: '抓住它！'
+    pleaseAddTwo: '請先加入至少兩格圖片。', building: '正在產生 GIF…', downloaded: '已下載 {size} MB 的 GIF。', frames: '{count} 格', framesPlural: '{count} 格', pause: '暫停預覽', play: '播放預覽', thumb: '點擊預覽', demoCaption: '抓住它！', themeDark: '使用深色模式', themeLight: '使用淺色模式'
   },
   ja: {
     title: 'Loopi — GIF スタンプスタジオ', localProcessing: '● ローカル処理', languageLabel: '言語', exportGif: 'GIFを書き出す',
@@ -48,7 +48,7 @@ const translations = {
     privateDefault: 'プライバシーを保護', framesStay: '画像はこの端末内に保存されます。', madeForStickers: 'スタンプ向け設計', squareCanvas: '正方形キャンバス、滑らかなループ、透過PNG対応。',
     noAccount: 'アカウント不要', openCreate: '開いて、作って、ダウンロード。', processedLocally: '画像はブラウザ内でローカル処理されます。',
     addTwo: '書き出すには2フレーム以上追加してください。', addOneMore: 'あと1フレーム追加すると書き出せます。', ready: '書き出し可能です。さらに画像を追加することもできます。', demoReady: 'デモを読み込みました。速度やループ方法を調整してみましょう。',
-    pleaseAddTwo: '先に2フレーム以上追加してください。', building: 'GIFを作成中…', downloaded: '{size} MB のGIFをダウンロードしました。', frames: '{count} フレーム', framesPlural: '{count} フレーム', pause: 'プレビューを一時停止', play: 'プレビューを再生', thumb: 'クリックしてプレビュー', demoCaption: 'つかまえて！'
+    pleaseAddTwo: '先に2フレーム以上追加してください。', building: 'GIFを作成中…', downloaded: '{size} MB のGIFをダウンロードしました。', frames: '{count} フレーム', framesPlural: '{count} フレーム', pause: 'プレビューを一時停止', play: 'プレビューを再生', thumb: 'クリックしてプレビュー', demoCaption: 'つかまえて！', themeDark: 'ダークモードにする', themeLight: 'ライトモードにする'
   },
   ko: {
     title: 'Loopi — GIF 스티커 스튜디오', localProcessing: '● 기기에서 처리', languageLabel: '언어', exportGif: 'GIF 내보내기',
@@ -60,13 +60,13 @@ const translations = {
     privateDefault: '기본적으로 안전하게', framesStay: '이미지는 이 기기에만 보관됩니다.', madeForStickers: '스티커에 최적화', squareCanvas: '정사각형 캔버스, 부드러운 반복, 투명 PNG 지원.',
     noAccount: '계정 필요 없음', openCreate: '열고, 만들고, 다운로드하세요.', processedLocally: '이미지는 브라우저에서 로컬로 처리됩니다.',
     addTwo: '내보내려면 프레임을 두 개 이상 추가하세요.', addOneMore: '프레임을 하나 더 추가하면 내보낼 수 있어요.', ready: '내보낼 준비가 됐습니다. 이미지를 더 추가할 수도 있어요.', demoReady: '데모를 불러왔습니다. 속도와 반복 방식을 조정해 보세요.',
-    pleaseAddTwo: '먼저 프레임을 두 개 이상 추가하세요.', building: 'GIF 만드는 중…', downloaded: '{size} MB GIF를 다운로드했습니다.', frames: '{count} 프레임', framesPlural: '{count} 프레임', pause: '미리보기 일시 정지', play: '미리보기 재생', thumb: '눌러서 미리보기', demoCaption: '잡아 봐!'
+    pleaseAddTwo: '먼저 프레임을 두 개 이상 추가하세요.', building: 'GIF 만드는 중…', downloaded: '{size} MB GIF를 다운로드했습니다.', frames: '{count} 프레임', framesPlural: '{count} 프레임', pause: '미리보기 일시 정지', play: '미리보기 재생', thumb: '눌러서 미리보기', demoCaption: '잡아 봐!', themeDark: '다크 모드 사용', themeLight: '라이트 모드 사용'
   }
 };
 
 const browserLanguage = navigator.language.toLowerCase();
 const detectedLanguage = browserLanguage.startsWith('ko') ? 'ko' : browserLanguage.startsWith('ja') ? 'ja' : browserLanguage.startsWith('zh-tw') || browserLanguage.startsWith('zh-hk') ? 'zh-TW' : browserLanguage.startsWith('zh') ? 'zh-CN' : 'en';
-const state = { frames: [], index: 0, speed: 140, loop: 'normal', playing: true, timer: null, language: localStorage.getItem('loopi-language') || detectedLanguage };
+const state = { frames: [], index: 0, speed: 140, loop: 'normal', playing: true, timer: null, language: localStorage.getItem('loopi-language') || detectedLanguage, theme: localStorage.getItem('loopi-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') };
 const canvas = $('#canvas');
 const ctx = canvas.getContext('2d', { willReadFrequently: true });
 const t = (key, params = {}) => { let value = (translations[state.language] || translations.en)[key] || translations.en[key] || key; for (const [name, replacement] of Object.entries(params)) value = value.replace(`{${name}}`, replacement); return value; };
@@ -77,6 +77,7 @@ function applyLanguage() {
   $$('[data-i18n]').forEach((element) => { element.textContent = t(element.dataset.i18n); });
   $$('[data-i18n-placeholder]').forEach((element) => { element.placeholder = t(element.dataset.i18nPlaceholder); });
   $('#languageSelect').value = state.language; $('#languageSelect').setAttribute('aria-label', t('languageLabel')); $('#playBtn').setAttribute('aria-label', t(state.playing ? 'pause' : 'play'));
+  const themeLabel = t(state.theme === 'dark' ? 'themeLight' : 'themeDark'); $('#themeButton').setAttribute('aria-label', themeLabel); $('#themeButton').title = themeLabel;
   const status = $('#status'); setStatus(status.dataset.statusKey || 'addTwo', JSON.parse(status.dataset.statusParams || '{}')); rebuildStrip();
 }
 function orderedFrames() { let frames = [...state.frames]; if (state.loop === 'reverse') frames.reverse(); if (state.loop === 'pingpong' && frames.length > 2) frames = frames.concat(frames.slice(1, -1).reverse()); return frames; }
@@ -102,6 +103,8 @@ async function addFiles(files) {
 }
 
 $('#languageSelect').onchange = (event) => { state.language = event.target.value; localStorage.setItem('loopi-language', state.language); applyLanguage(); };
+function applyTheme() { document.documentElement.dataset.theme = state.theme; $('#themeButton').textContent = state.theme === 'dark' ? '☀' : '☾'; const label = t(state.theme === 'dark' ? 'themeLight' : 'themeDark'); $('#themeButton').setAttribute('aria-label', label); $('#themeButton').title = label; }
+$('#themeButton').onclick = () => { state.theme = state.theme === 'dark' ? 'light' : 'dark'; localStorage.setItem('loopi-theme', state.theme); applyTheme(); };
 $('#fileInput').onchange = (event) => addFiles(event.target.files); const dropzone = $('#dropzone');
 ['dragenter', 'dragover'].forEach((name) => dropzone.addEventListener(name, (event) => { event.preventDefault(); dropzone.classList.add('drag'); }));
 ['dragleave', 'drop'].forEach((name) => dropzone.addEventListener(name, (event) => { event.preventDefault(); dropzone.classList.remove('drag'); }));
@@ -140,4 +143,4 @@ async function exportGif() {
   for (const frame of orderedFrames()) { draw(frame.img); const rgba = ctx.getImageData(0, 0, width, height).data; const indexed = new Uint8Array(width * height); for (let pixel = 0, index = 0; pixel < rgba.length; pixel += 4, index++) indexed[index] = paletteIndex(rgba[pixel], rgba[pixel + 1], rgba[pixel + 2]); bytes(data, 0x21, 0xf9, 4, 0); word(data, Math.max(2, Math.round(state.speed / 10))); bytes(data, 0, 0, 0, 0x2c); word(data, 0); word(data, 0); word(data, width); word(data, height); bytes(data, 0, 8); const packed = lzw(indexed); for (let offset = 0; offset < packed.length; offset += 255) { const chunk = packed.slice(offset, offset + 255); bytes(data, chunk.length, ...chunk); } bytes(data, 0); }
   bytes(data, 0x3b); const blob = new Blob([new Uint8Array(data)], { type: 'image/gif' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = 'loopi-sticker.gif'; link.click(); setTimeout(() => URL.revokeObjectURL(link.href), 2000); setStatus('downloaded', { size: (blob.size / 1024 / 1024).toFixed(1) });
 }
-$('#exportBtn').onclick = exportGif; $('#exportTop').onclick = exportGif; applyLanguage();
+$('#exportBtn').onclick = exportGif; $('#exportTop').onclick = exportGif; applyTheme(); applyLanguage();

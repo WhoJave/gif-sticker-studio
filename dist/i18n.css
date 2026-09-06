@@ -30,3 +30,33 @@
   .language-picker select { max-width: 112px; }
   .small { display: none; }
 }
+
+.theme-button { flex: 0 0 auto; font-size: 17px; }
+html, body, .topbar, .studio, .preview-panel, .dropzone, .segmented, .segmented button, .text-input, .icon-btn, .language-picker select, footer { transition: background-color .2s ease, color .2s ease, border-color .2s ease; }
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #f8f2ea;
+  --muted: #b8ada4;
+  --paper: #171412;
+  --cream: #2b2521;
+  --line: #403731;
+  --shadow: 0 24px 70px rgba(0, 0, 0, .35);
+}
+
+html[data-theme="dark"] body { background: var(--paper); }
+html[data-theme="dark"] .topbar { background: rgba(23, 20, 18, .9); }
+html[data-theme="dark"] .hero { background: radial-gradient(circle at 75% 10%, #3c3020 0, transparent 26%), radial-gradient(circle at 22% 45%, #3b2422 0, transparent 25%); }
+html[data-theme="dark"] .studio { background: #211d1a; }
+html[data-theme="dark"] .dropzone { background: #26211e; border-color: #5b4d44; }
+html[data-theme="dark"] .dropzone.drag,
+html[data-theme="dark"] .dropzone:hover { background: #34231f; border-color: var(--orange); }
+html[data-theme="dark"] .preview-panel { background: #1c1917; }
+html[data-theme="dark"] .segmented button.active,
+html[data-theme="dark"] .icon-btn { background: #38312c; color: var(--ink); }
+html[data-theme="dark"] .text-input { background: #26211e; color: var(--ink); }
+html[data-theme="dark"] .checker {
+  background-color: #2b2724;
+  background-image: linear-gradient(45deg, #37322e 25%, transparent 25%), linear-gradient(-45deg, #37322e 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #37322e 75%), linear-gradient(-45deg, transparent 75%, #37322e 75%);
+}
+html[data-theme="dark"] .button { color: #211915; background: #ff8268; }
