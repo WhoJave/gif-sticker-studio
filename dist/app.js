@@ -12,7 +12,7 @@ const translations = {
     privateDefault: 'Private by default', framesStay: 'Your frames stay on this device.', madeForStickers: 'Made for stickers', squareCanvas: 'Square canvas, smooth loops, transparent PNG support.',
     noAccount: 'No account needed', openCreate: 'Open, create, download.', processedLocally: 'Images are processed locally in your browser.',
     addTwo: 'Add at least two frames to export.', addOneMore: 'Add one more frame to export.', ready: 'Ready to export. Drag in more frames anytime.', demoReady: 'Demo loaded — try changing the speed and loop style.',
-    pleaseAddTwo: 'Please add at least two frames first.', building: 'Building your GIF…', downloaded: 'Downloaded {size} MB GIF.', frames: '{count} frame', framesPlural: '{count} frames', pause: 'Pause preview', play: 'Play preview', thumb: 'Click to preview'
+    pleaseAddTwo: 'Please add at least two frames first.', building: 'Building your GIF…', downloaded: 'Downloaded {size} MB GIF.', frames: '{count} frame', framesPlural: '{count} frames', pause: 'Pause preview', play: 'Play preview', thumb: 'Click to preview', demoCaption: 'CATCH IT!'
   },
   'zh-CN': {
     title: 'Loopi — GIF 动态贴纸工作室', localProcessing: '● 本地处理', languageLabel: '语言', exportGif: '导出 GIF',
@@ -24,7 +24,19 @@ const translations = {
     privateDefault: '默认保护隐私', framesStay: '你的图片始终保留在本设备。', madeForStickers: '专为贴纸设计', squareCanvas: '方形画布、流畅循环，并支持透明 PNG。',
     noAccount: '无需账户', openCreate: '打开、制作、下载。', processedLocally: '图片仅在你的浏览器中进行本地处理。',
     addTwo: '至少添加两帧才能导出。', addOneMore: '再添加一帧即可导出。', ready: '可以导出了，也可继续拖入更多图片。', demoReady: '演示已载入——试试调整速度和循环方式。',
-    pleaseAddTwo: '请先添加至少两帧图片。', building: '正在生成 GIF…', downloaded: '已下载 {size} MB 的 GIF。', frames: '{count} 帧', framesPlural: '{count} 帧', pause: '暂停预览', play: '播放预览', thumb: '点击预览'
+    pleaseAddTwo: '请先添加至少两帧图片。', building: '正在生成 GIF…', downloaded: '已下载 {size} MB 的 GIF。', frames: '{count} 帧', framesPlural: '{count} 帧', pause: '暂停预览', play: '播放预览', thumb: '点击预览', demoCaption: '抓住它！'
+  },
+  'zh-TW': {
+    title: 'Loopi — GIF 動態貼圖工作室', localProcessing: '● 本機處理', languageLabel: '語言', exportGif: '匯出 GIF',
+    eyebrow: 'GIF 動態貼圖工作室', heroOne: '讓畫面動起來。', heroTwo: '讓創意屬於你。', lede: '只需幾張圖片，即可在瀏覽器中製作精緻、循環播放的動態貼圖。',
+    addFrames: '加入畫面格', dropImages: '將圖片拖放到這裡', chooseImages: '或點擊選擇 PNG、JPG、WebP', needTry: '想先體驗一下？', useDemo: '使用示範畫面',
+    tuneLoop: '調整循環', frameSpeed: '每格時長', loopStyle: '循環方式', normal: '正常', pingpong: '往返', reverse: '倒放',
+    stickerText: '貼圖文字', captionPlaceholder: '例如：等等我！', textSize: '文字大小', export: '匯出', exportAnimated: '匯出動態 GIF',
+    livePreview: '即時預覽', stickerAppears: '你的貼圖會顯示在這裡', addOrDemo: '加入圖片或載入示範畫面', infiniteLoop: '∞ 無限循環',
+    privateDefault: '預設保護隱私', framesStay: '你的圖片始終保留在本裝置。', madeForStickers: '專為貼圖設計', squareCanvas: '方形畫布、流暢循環，並支援透明 PNG。',
+    noAccount: '無需帳戶', openCreate: '開啟、製作、下載。', processedLocally: '圖片僅在你的瀏覽器中進行本機處理。',
+    addTwo: '至少加入兩格才能匯出。', addOneMore: '再加入一格即可匯出。', ready: '可以匯出了，也可繼續拖入更多圖片。', demoReady: '示範已載入——試試調整速度和循環方式。',
+    pleaseAddTwo: '請先加入至少兩格圖片。', building: '正在產生 GIF…', downloaded: '已下載 {size} MB 的 GIF。', frames: '{count} 格', framesPlural: '{count} 格', pause: '暫停預覽', play: '播放預覽', thumb: '點擊預覽', demoCaption: '抓住它！'
   }
 };
 
@@ -82,7 +94,7 @@ function demoFrame(i) {
 $('#sampleBtn').onclick = async () => {
   state.frames.forEach((frame) => URL.revokeObjectURL(frame.url)); state.frames = [];
   for (let i = 0; i < 8; i++) { const c = demoFrame(i); const url = c.toDataURL(); const img = new Image(); img.src = url; await img.decode(); state.frames.push({ img, url, name: `demo-${i + 1}` }); }
-  $('#caption').value = state.language === 'zh-CN' ? '抓住它！' : 'CATCH IT!'; rebuildStrip(); setStatus('demoReady');
+  $('#caption').value = t('demoCaption'); rebuildStrip(); setStatus('demoReady');
 };
 
 function paletteIndex(r, g, b) { return ((r >> 5) << 5) | ((g >> 5) << 2) | (b >> 6); }
