@@ -12,6 +12,25 @@ A lightweight, browser-based tool for turning image frames into animated GIF sti
 
 Both options create a copy in your own account and deploy the static application. No environment variables, API keys, or build command are required. The Cloudflare flow uses `wrangler.jsonc` to publish the contents of `dist/` as Worker static assets.
 
+## Production deployment on Cloudflare
+
+The repository is configured to deploy the site to Cloudflare Workers at:
+
+**https://sticker.onepiece.fun**
+
+This hosting path is independent of ChatGPT Sites. The workflow in `.github/workflows/deploy-cloudflare.yml` deploys every push to `main`.
+
+One-time setup:
+
+1. In Cloudflare, create an API token from the **Edit Cloudflare Workers** template. Limit it to the account that owns `onepiece.fun`, and grant DNS edit access only for the `onepiece.fun` zone so Wrangler can create the custom domain record.
+2. Copy the Cloudflare account ID from the account overview.
+3. In GitHub, open **Settings → Secrets and variables → Actions** and add:
+   - `CLOUDFLARE_API_TOKEN`
+   - `CLOUDFLARE_ACCOUNT_ID`
+4. Open **Actions → Deploy to Cloudflare Workers** and run the workflow once.
+
+After the first successful deployment, Cloudflare manages the DNS record and TLS certificate for `sticker.onepiece.fun`. Future pushes to `main` deploy automatically. Keep both values in GitHub Actions secrets; never commit them to the repository.
+
 ## Features
 
 - Upload multiple PNG, JPG, or WebP frames
