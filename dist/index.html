@@ -1,72 +1,77 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#ff7356" />
   <title>Loopi — GIF Sticker Studio</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="i18n.css" />
 </head>
 <body>
   <header class="topbar">
     <a class="brand" href="#"><span class="brand-mark">L</span><span>loopi</span></a>
-    <div class="top-actions"><span class="privacy">● Local processing</span><button id="exportTop" class="button small">Export GIF</button></div>
+    <div class="top-actions">
+      <span class="privacy" data-i18n="localProcessing">● Local processing</span>
+      <label class="language-picker"><span class="sr-only" data-i18n="languageLabel">Language</span><select id="languageSelect" aria-label="Language"><option value="en">English</option><option value="zh-CN">简体中文</option></select></label>
+      <button id="exportTop" class="button small" data-i18n="exportGif">Export GIF</button>
+    </div>
   </header>
 
   <main>
     <section class="hero">
-      <p class="eyebrow">GIF STICKER STUDIO</p>
-      <h1>Make it move.<br><em>Make it yours.</em></h1>
-      <p class="lede">Turn a handful of images into a polished, looping sticker—right in your browser.</p>
+      <p class="eyebrow" data-i18n="eyebrow">GIF STICKER STUDIO</p>
+      <h1><span data-i18n="heroOne">Make it move.</span><br><em data-i18n="heroTwo">Make it yours.</em></h1>
+      <p class="lede" data-i18n="lede">Turn a handful of images into a polished, looping sticker—right in your browser.</p>
     </section>
 
     <section class="studio">
       <aside class="panel controls">
-        <div class="step"><b>1</b><span>Add your frames</span></div>
+        <div class="step"><b>1</b><span data-i18n="addFrames">Add your frames</span></div>
         <label class="dropzone" id="dropzone">
           <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp" multiple />
           <span class="upload-icon">↑</span>
-          <strong>Drop images here</strong>
-          <small>or tap to choose PNG, JPG, WebP</small>
+          <strong data-i18n="dropImages">Drop images here</strong>
+          <small data-i18n="chooseImages">or tap to choose PNG, JPG, WebP</small>
         </label>
-        <div class="sample-line"><span>Need something to try?</span><button id="sampleBtn" class="text-btn">Use demo frames</button></div>
+        <div class="sample-line"><span data-i18n="needTry">Need something to try?</span><button id="sampleBtn" class="text-btn" data-i18n="useDemo">Use demo frames</button></div>
 
-        <div class="step"><b>2</b><span>Tune the loop</span></div>
-        <div class="field-row"><label>Frame speed</label><output id="speedValue">140 ms</output></div>
+        <div class="step"><b>2</b><span data-i18n="tuneLoop">Tune the loop</span></div>
+        <div class="field-row"><label data-i18n="frameSpeed">Frame speed</label><output id="speedValue">140 ms</output></div>
         <input id="speed" type="range" min="60" max="700" value="140" step="10" />
 
-        <label class="field-label">Loop style</label>
+        <label class="field-label" data-i18n="loopStyle">Loop style</label>
         <div class="segmented" id="loopStyle">
-          <button class="active" data-value="normal">Normal</button>
-          <button data-value="pingpong">Ping-pong</button>
-          <button data-value="reverse">Reverse</button>
+          <button class="active" data-value="normal" data-i18n="normal">Normal</button>
+          <button data-value="pingpong" data-i18n="pingpong">Ping-pong</button>
+          <button data-value="reverse" data-i18n="reverse">Reverse</button>
         </div>
 
-        <label class="field-label" for="caption">Sticker text</label>
-        <input id="caption" class="text-input" maxlength="28" placeholder="e.g. WAIT FOR ME!" />
-        <div class="field-row"><label for="captionSize">Text size</label><output id="captionSizeValue">48</output></div>
+        <label class="field-label" for="caption" data-i18n="stickerText">Sticker text</label>
+        <input id="caption" class="text-input" maxlength="28" placeholder="e.g. WAIT FOR ME!" data-i18n-placeholder="captionPlaceholder" />
+        <div class="field-row"><label for="captionSize" data-i18n="textSize">Text size</label><output id="captionSizeValue">48</output></div>
         <input id="captionSize" type="range" min="22" max="76" value="48" />
 
-        <div class="step"><b>3</b><span>Export</span></div>
-        <button id="exportBtn" class="button export">Export animated GIF <span>→</span></button>
-        <p id="status" class="status">Add at least two frames to export.</p>
+        <div class="step"><b>3</b><span data-i18n="export">Export</span></div>
+        <button id="exportBtn" class="button export"><span data-i18n="exportAnimated">Export animated GIF</span><span>→</span></button>
+        <p id="status" class="status" data-status-key="addTwo">Add at least two frames to export.</p>
       </aside>
 
       <section class="preview-panel">
-        <div class="preview-head"><div><span class="dot"></span> LIVE PREVIEW</div><button id="playBtn" class="icon-btn" aria-label="Pause preview">Ⅱ</button></div>
-        <div class="canvas-wrap checker"><canvas id="canvas" width="512" height="512"></canvas><div id="emptyState"><span>✦</span><strong>Your sticker appears here</strong><small>Add frames or load the demo</small></div></div>
-        <div class="frame-info"><span id="frameCounter">0 frames</span><span>512 × 512</span><span>∞ loop</span></div>
+        <div class="preview-head"><div><span class="dot"></span> <span data-i18n="livePreview">LIVE PREVIEW</span></div><button id="playBtn" class="icon-btn" aria-label="Pause preview">Ⅱ</button></div>
+        <div class="canvas-wrap checker"><canvas id="canvas" width="512" height="512"></canvas><div id="emptyState"><span>✦</span><strong data-i18n="stickerAppears">Your sticker appears here</strong><small data-i18n="addOrDemo">Add frames or load the demo</small></div></div>
+        <div class="frame-info"><span id="frameCounter">0 frames</span><span>512 × 512</span><span data-i18n="infiniteLoop">∞ loop</span></div>
         <div class="filmstrip" id="filmstrip"></div>
       </section>
     </section>
 
     <section class="feature-strip">
-      <div><strong>Private by default</strong><span>Your frames stay on this device.</span></div>
-      <div><strong>Made for stickers</strong><span>Square canvas, smooth loops, transparent PNG support.</span></div>
-      <div><strong>No account needed</strong><span>Open, create, download.</span></div>
+      <div><strong data-i18n="privateDefault">Private by default</strong><span data-i18n="framesStay">Your frames stay on this device.</span></div>
+      <div><strong data-i18n="madeForStickers">Made for stickers</strong><span data-i18n="squareCanvas">Square canvas, smooth loops, transparent PNG support.</span></div>
+      <div><strong data-i18n="noAccount">No account needed</strong><span data-i18n="openCreate">Open, create, download.</span></div>
     </section>
   </main>
-  <footer><span>loopi / GIF Sticker Studio</span><span>Images are processed locally in your browser.</span></footer>
+  <footer><span>loopi / GIF Sticker Studio</span><span data-i18n="processedLocally">Images are processed locally in your browser.</span></footer>
   <script src="app.js"></script>
 </body>
 </html>

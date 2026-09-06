@@ -1,23 +1,105 @@
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-const state={frames:[],index:0,speed:140,loop:'normal',playing:true,timer:null};
-const canvas=$('#canvas'),ctx=canvas.getContext('2d',{willReadFrequently:true});
+const $ = (selector) => document.querySelector(selector);
+const $$ = (selector) => [...document.querySelectorAll(selector)];
 
-function orderedFrames(){let f=[...state.frames];if(state.loop==='reverse')f.reverse();if(state.loop==='pingpong'&&f.length>2)f=f.concat(f.slice(1,-1).reverse());return f}
-function draw(img){ctx.clearRect(0,0,512,512);const scale=Math.min(512/img.naturalWidth,512/img.naturalHeight),w=img.naturalWidth*scale,h=img.naturalHeight*scale;ctx.drawImage(img,(512-w)/2,(512-h)/2,w,h);const text=$('#caption').value.trim();if(text){const size=Number($('#captionSize').value);ctx.font=`900 ${size}px system-ui`;ctx.textAlign='center';ctx.textBaseline='bottom';ctx.lineJoin='round';ctx.strokeStyle='white';ctx.lineWidth=Math.max(6,size/6);ctx.strokeText(text,256,490);ctx.fillStyle='#201b18';ctx.fillText(text,256,490)}}
-function render(){clearTimeout(state.timer);const frames=orderedFrames();$('#emptyState').style.display=frames.length?'none':'flex';$('#frameCounter').textContent=`${state.frames.length} frame${state.frames.length===1?'':'s'}`;if(!frames.length){ctx.clearRect(0,0,512,512);return}state.index%=frames.length;draw(frames[state.index].img);$$('.thumb').forEach(x=>x.classList.toggle('active',Number(x.dataset.i)===state.frames.indexOf(frames[state.index])));if(state.playing&&frames.length>1)state.timer=setTimeout(()=>{state.index=(state.index+1)%frames.length;render()},state.speed)}
-function rebuildStrip(){const strip=$('#filmstrip');strip.innerHTML='';state.frames.forEach((f,i)=>{const im=new Image();im.src=f.url;im.className='thumb';im.dataset.i=i;im.title='Click to preview';im.onclick=()=>{state.index=i;draw(f.img)};strip.append(im)});render()}
-async function addFiles(files){const valid=[...files].filter(f=>f.type.startsWith('image/'));for(const file of valid){const url=URL.createObjectURL(file),img=new Image();img.src=url;await img.decode();state.frames.push({img,url,name:file.name})}state.index=0;rebuildStrip();$('#status').textContent=state.frames.length>1?'Ready to export. Drag in more frames anytime.':'Add one more frame to export.'}
+const translations = {
+  en: {
+    title: 'Loopi — GIF Sticker Studio', localProcessing: '● Local processing', languageLabel: 'Language', exportGif: 'Export GIF',
+    eyebrow: 'GIF STICKER STUDIO', heroOne: 'Make it move.', heroTwo: 'Make it yours.', lede: 'Turn a handful of images into a polished, looping sticker—right in your browser.',
+    addFrames: 'Add your frames', dropImages: 'Drop images here', chooseImages: 'or tap to choose PNG, JPG, WebP', needTry: 'Need something to try?', useDemo: 'Use demo frames',
+    tuneLoop: 'Tune the loop', frameSpeed: 'Frame speed', loopStyle: 'Loop style', normal: 'Normal', pingpong: 'Ping-pong', reverse: 'Reverse',
+    stickerText: 'Sticker text', captionPlaceholder: 'e.g. WAIT FOR ME!', textSize: 'Text size', export: 'Export', exportAnimated: 'Export animated GIF',
+    livePreview: 'LIVE PREVIEW', stickerAppears: 'Your sticker appears here', addOrDemo: 'Add frames or load the demo', infiniteLoop: '∞ loop',
+    privateDefault: 'Private by default', framesStay: 'Your frames stay on this device.', madeForStickers: 'Made for stickers', squareCanvas: 'Square canvas, smooth loops, transparent PNG support.',
+    noAccount: 'No account needed', openCreate: 'Open, create, download.', processedLocally: 'Images are processed locally in your browser.',
+    addTwo: 'Add at least two frames to export.', addOneMore: 'Add one more frame to export.', ready: 'Ready to export. Drag in more frames anytime.', demoReady: 'Demo loaded — try changing the speed and loop style.',
+    pleaseAddTwo: 'Please add at least two frames first.', building: 'Building your GIF…', downloaded: 'Downloaded {size} MB GIF.', frames: '{count} frame', framesPlural: '{count} frames', pause: 'Pause preview', play: 'Play preview', thumb: 'Click to preview'
+  },
+  'zh-CN': {
+    title: 'Loopi — GIF 动态贴纸工作室', localProcessing: '● 本地处理', languageLabel: '语言', exportGif: '导出 GIF',
+    eyebrow: 'GIF 动态贴纸工作室', heroOne: '让画面动起来。', heroTwo: '让创意属于你。', lede: '只需几张图片，即可在浏览器中制作精致、循环播放的动态贴纸。',
+    addFrames: '添加画面帧', dropImages: '将图片拖放到这里', chooseImages: '或点击选择 PNG、JPG、WebP', needTry: '想先体验一下？', useDemo: '使用演示画面',
+    tuneLoop: '调整循环', frameSpeed: '每帧时长', loopStyle: '循环方式', normal: '正常', pingpong: '往返', reverse: '倒放',
+    stickerText: '贴纸文字', captionPlaceholder: '例如：等等我！', textSize: '文字大小', export: '导出', exportAnimated: '导出动态 GIF',
+    livePreview: '实时预览', stickerAppears: '你的贴纸会显示在这里', addOrDemo: '添加图片或载入演示画面', infiniteLoop: '∞ 无限循环',
+    privateDefault: '默认保护隐私', framesStay: '你的图片始终保留在本设备。', madeForStickers: '专为贴纸设计', squareCanvas: '方形画布、流畅循环，并支持透明 PNG。',
+    noAccount: '无需账户', openCreate: '打开、制作、下载。', processedLocally: '图片仅在你的浏览器中进行本地处理。',
+    addTwo: '至少添加两帧才能导出。', addOneMore: '再添加一帧即可导出。', ready: '可以导出了，也可继续拖入更多图片。', demoReady: '演示已载入——试试调整速度和循环方式。',
+    pleaseAddTwo: '请先添加至少两帧图片。', building: '正在生成 GIF…', downloaded: '已下载 {size} MB 的 GIF。', frames: '{count} 帧', framesPlural: '{count} 帧', pause: '暂停预览', play: '播放预览', thumb: '点击预览'
+  }
+};
 
-$('#fileInput').onchange=e=>addFiles(e.target.files);const dz=$('#dropzone');['dragenter','dragover'].forEach(n=>dz.addEventListener(n,e=>{e.preventDefault();dz.classList.add('drag')}));['dragleave','drop'].forEach(n=>dz.addEventListener(n,e=>{e.preventDefault();dz.classList.remove('drag')}));dz.addEventListener('drop',e=>addFiles(e.dataTransfer.files));
-$('#speed').oninput=e=>{state.speed=Number(e.target.value);$('#speedValue').value=`${state.speed} ms`;render()};$('#captionSize').oninput=e=>{$('#captionSizeValue').value=e.target.value;render()};$('#caption').oninput=render;
-$$('#loopStyle button').forEach(b=>b.onclick=()=>{$$('#loopStyle button').forEach(x=>x.classList.remove('active'));b.classList.add('active');state.loop=b.dataset.value;state.index=0;render()});
-$('#playBtn').onclick=()=>{state.playing=!state.playing;$('#playBtn').textContent=state.playing?'Ⅱ':'▶';render()};
+const state = { frames: [], index: 0, speed: 140, loop: 'normal', playing: true, timer: null, language: localStorage.getItem('loopi-language') || (navigator.language.toLowerCase().startsWith('zh') ? 'zh-CN' : 'en') };
+const canvas = $('#canvas');
+const ctx = canvas.getContext('2d', { willReadFrequently: true });
+const t = (key, params = {}) => { let value = (translations[state.language] || translations.en)[key] || translations.en[key] || key; for (const [name, replacement] of Object.entries(params)) value = value.replace(`{${name}}`, replacement); return value; };
 
-function demoFrame(i){const c=document.createElement('canvas');c.width=c.height=512;const x=c.getContext('2d');x.clearRect(0,0,512,512);const bounce=Math.sin(i/8*Math.PI)*45,wing=i%2?18:-18;x.translate(0,-bounce);x.fillStyle='#ffbf68';x.beginPath();x.ellipse(250,315,118,103,0,0,7);x.fill();x.beginPath();x.moveTo(170,240);x.lineTo(185,145);x.lineTo(235,228);x.fill();x.beginPath();x.moveTo(275,228);x.lineTo(335,145);x.lineTo(340,250);x.fill();x.fillStyle='#fff0d8';x.beginPath();x.ellipse(250,330,70,62,0,0,7);x.fill();x.fillStyle='#241b18';x.beginPath();x.arc(217,283,10,0,7);x.arc(288,283,10,0,7);x.fill();x.strokeStyle='#241b18';x.lineWidth=7;x.beginPath();x.arc(253,308,16,0,Math.PI);x.stroke();x.setTransform(1,0,0,1,0,0);const bx=355+Math.sin(i/8*Math.PI*2)*38,by=155+Math.cos(i/8*Math.PI*2)*25;x.fillStyle='#7654d6';x.save();x.translate(bx,by);x.rotate(wing/90);x.beginPath();x.ellipse(-15,0,20,30,-.5,0,7);x.ellipse(15,0,20,30,.5,0,7);x.fill();x.fillStyle='#2b213c';x.fillRect(-3,-18,6,40);x.restore();return c}
-$('#sampleBtn').onclick=async()=>{state.frames.forEach(f=>URL.revokeObjectURL(f.url));state.frames=[];for(let i=0;i<8;i++){const c=demoFrame(i),url=c.toDataURL(),img=new Image();img.src=url;await img.decode();state.frames.push({img,url,name:`demo-${i+1}`})}$('#caption').value='CATCH IT!';rebuildStrip();$('#status').textContent='Demo loaded — try changing the speed and loop style.'};
+function setStatus(key, params = {}) { const status = $('#status'); status.dataset.statusKey = key; status.dataset.statusParams = JSON.stringify(params); status.textContent = t(key, params); }
+function applyLanguage() {
+  document.documentElement.lang = state.language; document.title = t('title');
+  $$('[data-i18n]').forEach((element) => { element.textContent = t(element.dataset.i18n); });
+  $$('[data-i18n-placeholder]').forEach((element) => { element.placeholder = t(element.dataset.i18nPlaceholder); });
+  $('#languageSelect').value = state.language; $('#languageSelect').setAttribute('aria-label', t('languageLabel')); $('#playBtn').setAttribute('aria-label', t(state.playing ? 'pause' : 'play'));
+  const status = $('#status'); setStatus(status.dataset.statusKey || 'addTwo', JSON.parse(status.dataset.statusParams || '{}')); rebuildStrip();
+}
+function orderedFrames() { let frames = [...state.frames]; if (state.loop === 'reverse') frames.reverse(); if (state.loop === 'pingpong' && frames.length > 2) frames = frames.concat(frames.slice(1, -1).reverse()); return frames; }
+function draw(img) {
+  ctx.clearRect(0, 0, 512, 512); const scale = Math.min(512 / img.naturalWidth, 512 / img.naturalHeight); const width = img.naturalWidth * scale; const height = img.naturalHeight * scale;
+  ctx.drawImage(img, (512 - width) / 2, (512 - height) / 2, width, height); const text = $('#caption').value.trim();
+  if (text) { const size = Number($('#captionSize').value); ctx.font = `900 ${size}px system-ui`; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom'; ctx.lineJoin = 'round'; ctx.strokeStyle = 'white'; ctx.lineWidth = Math.max(6, size / 6); ctx.strokeText(text, 256, 490); ctx.fillStyle = '#201b18'; ctx.fillText(text, 256, 490); }
+}
+function render() {
+  clearTimeout(state.timer); const frames = orderedFrames(); $('#emptyState').style.display = frames.length ? 'none' : 'flex'; $('#frameCounter').textContent = t(state.frames.length === 1 ? 'frames' : 'framesPlural', { count: state.frames.length });
+  if (!frames.length) { ctx.clearRect(0, 0, 512, 512); return; } state.index %= frames.length; draw(frames[state.index].img);
+  $$('.thumb').forEach((thumb) => thumb.classList.toggle('active', Number(thumb.dataset.i) === state.frames.indexOf(frames[state.index])));
+  if (state.playing && frames.length > 1) state.timer = setTimeout(() => { state.index = (state.index + 1) % frames.length; render(); }, state.speed);
+}
+function rebuildStrip() {
+  const strip = $('#filmstrip'); strip.innerHTML = '';
+  state.frames.forEach((frame, index) => { const image = new Image(); image.src = frame.url; image.className = 'thumb'; image.dataset.i = index; image.title = t('thumb'); image.onclick = () => { state.index = index; draw(frame.img); }; strip.append(image); }); render();
+}
+async function addFiles(files) {
+  const validFiles = [...files].filter((file) => file.type.startsWith('image/'));
+  for (const file of validFiles) { const url = URL.createObjectURL(file); const img = new Image(); img.src = url; await img.decode(); state.frames.push({ img, url, name: file.name }); }
+  state.index = 0; rebuildStrip(); setStatus(state.frames.length > 1 ? 'ready' : 'addOneMore');
+}
 
-function paletteIndex(r,g,b){return ((r>>5)<<5)|((g>>5)<<2)|(b>>6)}
-function bytes(n,...v){for(const x of v)n.push(x&255)}function word(n,v){bytes(n,v,v>>8)}
-function lzw(indices,minCodeSize=8){const clear=1<<minCodeSize,end=clear+1,out=[];let bitBuf=0,bitCount=0,codeSize=minCodeSize+1,next=end+1,dict=new Map();const write=code=>{bitBuf|=code<<bitCount;bitCount+=codeSize;while(bitCount>=8){out.push(bitBuf&255);bitBuf>>=8;bitCount-=8}};write(clear);let prefix=indices[0];for(let i=1;i<indices.length;i++){const k=prefix+','+indices[i];if(dict.has(k)){prefix=dict.get(k)}else{write(prefix);if(next<4096){dict.set(k,next++);if(next===(1<<codeSize)&&codeSize<12)codeSize++}else{write(clear);dict.clear();codeSize=minCodeSize+1;next=end+1}prefix=indices[i]}}write(prefix);write(end);if(bitCount)out.push(bitBuf&255);return out}
-async function exportGif(){if(state.frames.length<2){$('#status').textContent='Please add at least two frames first.';return}$('#status').textContent='Building your GIF…';await new Promise(r=>setTimeout(r,30));const W=512,H=512,data=[];bytes(data,71,73,70,56,57,97);word(data,W);word(data,H);bytes(data,0xf7,0,0);for(let i=0;i<256;i++)bytes(data,((i>>5)&7)*255/7,((i>>2)&7)*255/7,(i&3)*255/3);bytes(data,0x21,0xff,11,...[...new TextEncoder().encode('NETSCAPE2.0')],3,1,0,0,0);for(const f of orderedFrames()){draw(f.img);const rgba=ctx.getImageData(0,0,W,H).data,idx=new Uint8Array(W*H);for(let p=0,j=0;p<rgba.length;p+=4,j++)idx[j]=paletteIndex(rgba[p],rgba[p+1],rgba[p+2]);bytes(data,0x21,0xf9,4,0);word(data,Math.max(2,Math.round(state.speed/10)));bytes(data,0,0,0,0x2c);word(data,0);word(data,0);word(data,W);word(data,H);bytes(data,0,8);const packed=lzw(idx);for(let p=0;p<packed.length;p+=255){const chunk=packed.slice(p,p+255);bytes(data,chunk.length,...chunk)}bytes(data,0)}bytes(data,0x3b);const blob=new Blob([new Uint8Array(data)],{type:'image/gif'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='loopi-sticker.gif';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);$('#status').textContent=`Downloaded ${(blob.size/1024/1024).toFixed(1)} MB GIF.`}
-$('#exportBtn').onclick=exportGif;$('#exportTop').onclick=exportGif;render();
+$('#languageSelect').onchange = (event) => { state.language = event.target.value; localStorage.setItem('loopi-language', state.language); applyLanguage(); };
+$('#fileInput').onchange = (event) => addFiles(event.target.files); const dropzone = $('#dropzone');
+['dragenter', 'dragover'].forEach((name) => dropzone.addEventListener(name, (event) => { event.preventDefault(); dropzone.classList.add('drag'); }));
+['dragleave', 'drop'].forEach((name) => dropzone.addEventListener(name, (event) => { event.preventDefault(); dropzone.classList.remove('drag'); }));
+dropzone.addEventListener('drop', (event) => addFiles(event.dataTransfer.files));
+$('#speed').oninput = (event) => { state.speed = Number(event.target.value); $('#speedValue').value = `${state.speed} ms`; render(); };
+$('#captionSize').oninput = (event) => { $('#captionSizeValue').value = event.target.value; render(); }; $('#caption').oninput = render;
+$$('#loopStyle button').forEach((button) => button.onclick = () => { $$('#loopStyle button').forEach((item) => item.classList.remove('active')); button.classList.add('active'); state.loop = button.dataset.value; state.index = 0; render(); });
+$('#playBtn').onclick = () => { state.playing = !state.playing; $('#playBtn').textContent = state.playing ? 'Ⅱ' : '▶'; $('#playBtn').setAttribute('aria-label', t(state.playing ? 'pause' : 'play')); render(); };
+
+function demoFrame(i) {
+  const c = document.createElement('canvas'); c.width = c.height = 512; const x = c.getContext('2d'); x.clearRect(0, 0, 512, 512); const bounce = Math.sin(i / 8 * Math.PI) * 45; const wing = i % 2 ? 18 : -18; x.translate(0, -bounce);
+  x.fillStyle = '#ffbf68'; x.beginPath(); x.ellipse(250, 315, 118, 103, 0, 0, 7); x.fill(); x.beginPath(); x.moveTo(170, 240); x.lineTo(185, 145); x.lineTo(235, 228); x.fill(); x.beginPath(); x.moveTo(275, 228); x.lineTo(335, 145); x.lineTo(340, 250); x.fill();
+  x.fillStyle = '#fff0d8'; x.beginPath(); x.ellipse(250, 330, 70, 62, 0, 0, 7); x.fill(); x.fillStyle = '#241b18'; x.beginPath(); x.arc(217, 283, 10, 0, 7); x.arc(288, 283, 10, 0, 7); x.fill(); x.strokeStyle = '#241b18'; x.lineWidth = 7; x.beginPath(); x.arc(253, 308, 16, 0, Math.PI); x.stroke(); x.setTransform(1, 0, 0, 1, 0, 0);
+  const butterflyX = 355 + Math.sin(i / 8 * Math.PI * 2) * 38; const butterflyY = 155 + Math.cos(i / 8 * Math.PI * 2) * 25; x.fillStyle = '#7654d6'; x.save(); x.translate(butterflyX, butterflyY); x.rotate(wing / 90); x.beginPath(); x.ellipse(-15, 0, 20, 30, -.5, 0, 7); x.ellipse(15, 0, 20, 30, .5, 0, 7); x.fill(); x.fillStyle = '#2b213c'; x.fillRect(-3, -18, 6, 40); x.restore(); return c;
+}
+$('#sampleBtn').onclick = async () => {
+  state.frames.forEach((frame) => URL.revokeObjectURL(frame.url)); state.frames = [];
+  for (let i = 0; i < 8; i++) { const c = demoFrame(i); const url = c.toDataURL(); const img = new Image(); img.src = url; await img.decode(); state.frames.push({ img, url, name: `demo-${i + 1}` }); }
+  $('#caption').value = state.language === 'zh-CN' ? '抓住它！' : 'CATCH IT!'; rebuildStrip(); setStatus('demoReady');
+};
+
+function paletteIndex(r, g, b) { return ((r >> 5) << 5) | ((g >> 5) << 2) | (b >> 6); }
+function bytes(target, ...values) { for (const value of values) target.push(value & 255); }
+function word(target, value) { bytes(target, value, value >> 8); }
+function lzw(indices, minCodeSize = 8) {
+  const clear = 1 << minCodeSize; const end = clear + 1; const out = []; let bitBuffer = 0; let bitCount = 0; let codeSize = minCodeSize + 1; let next = end + 1; const dict = new Map();
+  const write = (code) => { bitBuffer |= code << bitCount; bitCount += codeSize; while (bitCount >= 8) { out.push(bitBuffer & 255); bitBuffer >>= 8; bitCount -= 8; } };
+  write(clear); let prefix = indices[0];
+  for (let i = 1; i < indices.length; i++) { const key = `${prefix},${indices[i]}`; if (dict.has(key)) prefix = dict.get(key); else { write(prefix); if (next < 4096) { dict.set(key, next++); if (next === (1 << codeSize) && codeSize < 12) codeSize++; } else { write(clear); dict.clear(); codeSize = minCodeSize + 1; next = end + 1; } prefix = indices[i]; } }
+  write(prefix); write(end); if (bitCount) out.push(bitBuffer & 255); return out;
+}
+async function exportGif() {
+  if (state.frames.length < 2) { setStatus('pleaseAddTwo'); return; } setStatus('building'); await new Promise((resolve) => setTimeout(resolve, 30));
+  const width = 512; const height = 512; const data = []; bytes(data, 71, 73, 70, 56, 57, 97); word(data, width); word(data, height); bytes(data, 0xf7, 0, 0);
+  for (let i = 0; i < 256; i++) bytes(data, ((i >> 5) & 7) * 255 / 7, ((i >> 2) & 7) * 255 / 7, (i & 3) * 255 / 3); bytes(data, 0x21, 0xff, 11, ...new TextEncoder().encode('NETSCAPE2.0'), 3, 1, 0, 0, 0);
+  for (const frame of orderedFrames()) { draw(frame.img); const rgba = ctx.getImageData(0, 0, width, height).data; const indexed = new Uint8Array(width * height); for (let pixel = 0, index = 0; pixel < rgba.length; pixel += 4, index++) indexed[index] = paletteIndex(rgba[pixel], rgba[pixel + 1], rgba[pixel + 2]); bytes(data, 0x21, 0xf9, 4, 0); word(data, Math.max(2, Math.round(state.speed / 10))); bytes(data, 0, 0, 0, 0x2c); word(data, 0); word(data, 0); word(data, width); word(data, height); bytes(data, 0, 8); const packed = lzw(indexed); for (let offset = 0; offset < packed.length; offset += 255) { const chunk = packed.slice(offset, offset + 255); bytes(data, chunk.length, ...chunk); } bytes(data, 0); }
+  bytes(data, 0x3b); const blob = new Blob([new Uint8Array(data)], { type: 'image/gif' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = 'loopi-sticker.gif'; link.click(); setTimeout(() => URL.revokeObjectURL(link.href), 2000); setStatus('downloaded', { size: (blob.size / 1024 / 1024).toFixed(1) });
+}
+$('#exportBtn').onclick = exportGif; $('#exportTop').onclick = exportGif; applyLanguage();
