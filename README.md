@@ -14,6 +14,8 @@ A lightweight, browser-based tool for turning image frames into animated GIF sti
 - Built-in animated kitten demo
 - GIF encoding and download directly in the browser
 - No server upload: images remain on the user's device
+- English, Simplified Chinese, Traditional Chinese, Japanese, and Korean interfaces
+- Persistent light/dark mode with automatic device-theme detection
 
 ## Run locally
 
